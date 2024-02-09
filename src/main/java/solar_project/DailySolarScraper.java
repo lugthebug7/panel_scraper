@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.List;
 
-public class SolarScraper {
+public class DailySolarScraper {
     public static void main(String[] args) {
 
         ChromeOptions chromeOptions = new ChromeOptions();
