@@ -1,5 +1,6 @@
 package solar_project;
 
+import org.checkerframework.checker.units.qual.s;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -7,10 +8,14 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 public class DailySolarScraper {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--remote-allow-origins=*");
@@ -29,13 +34,16 @@ public class DailySolarScraper {
             driver.findElement(By.id("okta-signin-submit")).click();
 
             // Wait for login to complete (explicit wait)
-            new WebDriverWait(driver, 10).until(ExpectedConditions.urlToBe("https://sds.mysunpower.com/monitor/"));
+            new WebDriverWait(driver, 20).until(ExpectedConditions.urlToBe("https://sds.mysunpower.com/monitor/"));
 
             // Navigate to the panels page
             driver.get("https://sds.mysunpower.com/monitor/panels");
 
             // Number of days you want to scrape
-            int numberOfDaysToScrape = 5;
+            int numberOfDaysToScrape = 1836;
+
+            FileWriter fileWriter = new FileWriter("solar_data.txt");
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
             // Loop to navigate through days and scrape data
             for (int i = 0; i < numberOfDaysToScrape; i++) {
@@ -57,15 +65,17 @@ public class DailySolarScraper {
                     
                     // Extract the panel value (Total Energy in kWh)
                     String panelValue = panelItem.findElement(By.cssSelector(".panel-value")).getText();
-                    
-                    // Print the extracted data
-                    System.out.println(serialNumber + "     " + panelValue + "     " + dateText);
+
+                    bufferedWriter.write(serialNumber + "," + panelValue + "," + dateText);
+                    bufferedWriter.newLine(); 
                 }
             
                 // Locate and click the left arrow (going back one day)
                 WebElement leftArrow = driver.findElement(By.xpath("//div[@class='arrow']/img[contains(@src, 'left-arrow-light')]"));
                 leftArrow.click();
             }
+            bufferedWriter.close();
+
         } finally {
             // Close the browser once done
             driver.quit();
