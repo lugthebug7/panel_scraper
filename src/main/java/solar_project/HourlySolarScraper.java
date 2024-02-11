@@ -12,9 +12,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class HourlySolarScraper {
+
+
     public static void main(String[] args) throws IOException {
 
         ChromeOptions chromeOptions = new ChromeOptions();
@@ -63,11 +67,25 @@ public class HourlySolarScraper {
                     // Extract the serial number
                     String serialNumber = panelItem.findElement(By.cssSelector(".serial-number")).getText();
                     
-                    // Extract the panel value (Total Energy in kWh)
-                    String panelValue = panelItem.findElement(By.cssSelector(".panel-value")).getText();
+                    // Clicks into panel to see hourly data
+                    panelItem.click();
 
-                    bufferedWriter.write(serialNumber + "," + panelValue + "," + dateText);
-                    bufferedWriter.newLine(); 
+                    // Wait for the side panel data to be visible
+                    List<WebElement> rechartItems = driver.findElements(By.cssSelector("article.recharts-bar-rectangle"));
+
+                    // Iterate through each bar item
+                    for (WebElement rechartItem : rechartItems){
+                        // focus on bar to show card 
+                        rechartItem.click();
+
+                        // collect timeframe and hourly data
+                        String hourText = driver.findElement(By.cssSelector("article.tooltip")).getText();
+                        String hourlyValue = driver.findElement(By.cssSelector("article.energy")).getText();
+
+                        bufferedWriter.write(serialNumber + "," + hourlyValue + "," + hourText);
+                        bufferedWriter.newLine(); 
+                    }
+
                 }
             
                 // Locate and click the left arrow (going back one day)
