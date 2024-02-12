@@ -65,6 +65,7 @@ public class HourlySolarScraper {
 
                 // Iterate through each panel item  
                 for (WebElement panelItem : panelItems) {
+                    
                     // Extract the serial number
                     String serialNumber = panelItem.findElement(By.cssSelector(".serial-number")).getText();
                     
@@ -80,9 +81,13 @@ public class HourlySolarScraper {
                         Actions actions = new Actions(driver);
                         actions.moveToElement(rechartItem).perform();
 
-                        WebElement tooltip = driver.findElement(By.cssSelector("tooltip"));
+                        WebElement tooltip = driver.findElement(By.cssSelector("article.tooltip"));
                         String tooltipText = tooltip.getText();
                         System.out.println("Tooltip text: " + tooltipText);
+
+                        WebElement exitButton = driver.findElement(By.cssSelector("article.closeSideNav"));
+                        exitButton.click();
+
                         // collect timeframe and hourly data
                         // String hourText = driver.findElement(By.cssSelector("article.tooltip")).getText();
                         // String hourlyValue = driver.findElement(By.cssSelector("article.energy")).getText();
