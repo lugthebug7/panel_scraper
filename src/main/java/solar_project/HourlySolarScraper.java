@@ -23,7 +23,7 @@ public class HourlySolarScraper {
 
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--remote-allow-origins=*");
-        System.setProperty("webdriver.chrome.driver", "chromedriver-mac-arm64/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "/Users/kaidenjones/Downloads/chromedriver-mac-x64/chromedriver");
         ChromeDriver driver = new ChromeDriver(chromeOptions);
 
         try {
