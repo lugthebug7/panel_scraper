@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -76,14 +77,18 @@ public class HourlySolarScraper {
                     // Iterate through each bar item
                     for (WebElement rechartItem : rechartItems){
                         // focus on bar to show card 
-                        rechartItem.click();
+                        Actions actions = new Actions(driver);
+                        actions.moveToElement(rechartItem).perform();
 
+                        WebElement tooltip = driver.findElement(By.cssSelector("tooltip"));
+                        String tooltipText = tooltip.getText();
+                        System.out.println("Tooltip text: " + tooltipText);
                         // collect timeframe and hourly data
-                        String hourText = driver.findElement(By.cssSelector("article.tooltip")).getText();
-                        String hourlyValue = driver.findElement(By.cssSelector("article.energy")).getText();
+                        // String hourText = driver.findElement(By.cssSelector("article.tooltip")).getText();
+                        // String hourlyValue = driver.findElement(By.cssSelector("article.energy")).getText();
 
-                        bufferedWriter.write(serialNumber + "," + hourlyValue + "," + hourText);
-                        bufferedWriter.newLine(); 
+                        // bufferedWriter.write(serialNumber + "," + hourlyValue + "," + hourText);
+                        // bufferedWriter.newLine(); 
                     }
 
                 }
