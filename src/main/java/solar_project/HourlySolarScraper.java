@@ -48,7 +48,7 @@ public class HourlySolarScraper {
             // Number of days you want to scrape
             int numberOfDaysToScrape = 5;
 
-            FileWriter fileWriter = new FileWriter("solar_data.txt");
+            FileWriter fileWriter = new FileWriter("hourly_solar_data.txt");
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
             // Loop to navigate through days and scrape data
@@ -78,28 +78,24 @@ public class HourlySolarScraper {
 
                     // Iterate through each bar item
                     for (WebElement rechartItem : rechartItems){
-                        // focus on bar to show card 
-                        Actions actions = new Actions(driver);
-                        actions.moveToElement(rechartItem).perform();
 
-                        // slows program down to focus on tooltip card
+                        // Scroll to the element
+                        new Actions(driver).moveToElement(rechartItem).perform();
+
+                        // Wait for the card to appear
                         @SuppressWarnings("deprecation")
-                        WebDriverWait wait = new WebDriverWait(driver, (long) 1);
-                        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("tooltip")));
+                        WebDriverWait wait = new WebDriverWait(driver, 10);
+                        WebElement card = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("tooltip")));
 
-                        WebElement tooltip = driver.findElement(By.cssSelector("article.tooltip"));
-                        String tooltipText = tooltip.getText();
-                        System.out.println("Tooltip text: " + tooltipText);
-
-                        WebElement exitButton = driver.findElement(By.className("closeSideNav"));
-                        exitButton.click();
-
-                        // collect timeframe and hourly data
-                        String hourText = driver.findElement(By.cssSelector("article.tooltip")).getText();
-                        String hourlyValue = driver.findElement(By.cssSelector("article.energy")).getText();
-
-                        bufferedWriter.write(serialNumber + "," + hourlyValue + "," + hourText + "," + dateText);
+                        // Collect/Print data on the card
+                        String cardData = card.getText();
+                        System.out.println("Card Data: " + cardData);
+                        bufferedWriter.write(serialNumber + "," + cardData + "," + dateText);
                         bufferedWriter.newLine(); 
+
+                        // Close the browser
+                        driver.quit();
+
                     }
 
                 }
@@ -121,4 +117,36 @@ public class HourlySolarScraper {
 
 
 
+
+
+
+
+
+
+
+/*
+ * inner for loop code that wont work
+ * 
+ * // focus on bar to show card 
+                        Actions actions = new Actions(driver);
+                        actions.moveToElement(rechartItem).perform();
+
+                        // slows program down to focus on tooltip card
+                        @SuppressWarnings("deprecation")
+                        WebDriverWait wait = new WebDriverWait(driver, 1);
+                        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("recharts-tooltip-wrapper")));
+                        String tooltipText = driver.findElement(By.className(dateText)).getText();
+                        System.out.println("Tooltip text: " + tooltipText);
+
+                        // collect timeframe and hourly data
+                        String hourText = driver.findElement(By.cssSelector("article.tooltip")).getText();
+                        String hourlyValue = driver.findElement(By.cssSelector("article.energy")).getText();
+
+                        WebElement exitButton = driver.findElement(By.className("closeSideNav"));
+                        exitButton.click();
+
+                        bufferedWriter.write(serialNumber + "," + hourlyValue + "," + hourText + "," + dateText);
+                        bufferedWriter.newLine(); 
+ * 
+ */
 

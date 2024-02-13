@@ -19,7 +19,7 @@ public class DailySolarScraper {
 
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--remote-allow-origins=*");
-        System.setProperty("webdriver.chrome.driver", "chromedriver-mac-arm64/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "/Users/kaidenjones/Downloads/chromedriver-mac-x64/chromedriver");
         ChromeDriver driver = new ChromeDriver(chromeOptions);
 
         try {
@@ -40,7 +40,7 @@ public class DailySolarScraper {
             driver.get("https://sds.mysunpower.com/monitor/panels");
 
             // Number of days you want to scrape
-            int numberOfDaysToScrape = 1816;
+            int numberOfDaysToScrape = 6;
 
             FileWriter fileWriter = new FileWriter("solar_data.txt");
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
