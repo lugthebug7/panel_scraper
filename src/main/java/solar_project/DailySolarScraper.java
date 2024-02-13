@@ -40,7 +40,7 @@ public class DailySolarScraper {
             driver.get("https://sds.mysunpower.com/monitor/panels");
 
             // Number of days you want to scrape
-            int numberOfDaysToScrape = 1836;
+            int numberOfDaysToScrape = 1816;
 
             FileWriter fileWriter = new FileWriter("solar_data.txt");
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);

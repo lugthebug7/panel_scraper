@@ -82,6 +82,10 @@ public class HourlySolarScraper {
                         Actions actions = new Actions(driver);
                         actions.moveToElement(rechartItem).perform();
 
+                        WebDriverWait wait = new WebDriverWait(driver, (long) .01);
+                        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.arrow")));
+                        element.click();
+
                         WebElement tooltip = driver.findElement(By.cssSelector("article.tooltip"));
                         String tooltipText = tooltip.getText();
                         System.out.println("Tooltip text: " + tooltipText);
@@ -93,7 +97,7 @@ public class HourlySolarScraper {
                         String hourText = driver.findElement(By.cssSelector("article.tooltip")).getText();
                         String hourlyValue = driver.findElement(By.cssSelector("article.energy")).getText();
 
-                        bufferedWriter.write(serialNumber + "," + hourlyValue + "," + hourText);
+                        bufferedWriter.write(serialNumber + "," + hourlyValue + "," + hourText + "," + dateText);
                         bufferedWriter.newLine(); 
                     }
 
