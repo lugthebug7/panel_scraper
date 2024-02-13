@@ -46,7 +46,7 @@ public class HourlySolarScraper {
             driver.get("https://sds.mysunpower.com/monitor/panels");
 
             // Number of days you want to scrape
-            int numberOfDaysToScrape = 1836;
+            int numberOfDaysToScrape = 5;
 
             FileWriter fileWriter = new FileWriter("solar_data.txt");
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -90,11 +90,11 @@ public class HourlySolarScraper {
                         exitButton.click();
 
                         // collect timeframe and hourly data
-                        // String hourText = driver.findElement(By.cssSelector("article.tooltip")).getText();
-                        // String hourlyValue = driver.findElement(By.cssSelector("article.energy")).getText();
+                        String hourText = driver.findElement(By.cssSelector("article.tooltip")).getText();
+                        String hourlyValue = driver.findElement(By.cssSelector("article.energy")).getText();
 
-                        // bufferedWriter.write(serialNumber + "," + hourlyValue + "," + hourText);
-                        // bufferedWriter.newLine(); 
+                        bufferedWriter.write(serialNumber + "," + hourlyValue + "," + hourText);
+                        bufferedWriter.newLine(); 
                     }
 
                 }
