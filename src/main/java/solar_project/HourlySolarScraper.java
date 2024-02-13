@@ -82,9 +82,10 @@ public class HourlySolarScraper {
                         Actions actions = new Actions(driver);
                         actions.moveToElement(rechartItem).perform();
 
-                        WebDriverWait wait = new WebDriverWait(driver, (long) .01);
-                        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.arrow")));
-                        element.click();
+                        // slows program down to focus on tooltip card
+                        @SuppressWarnings("deprecation")
+                        WebDriverWait wait = new WebDriverWait(driver, (long) 1);
+                        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("tooltip")));
 
                         WebElement tooltip = driver.findElement(By.cssSelector("article.tooltip"));
                         String tooltipText = tooltip.getText();
