@@ -2,6 +2,7 @@ package solar_project;
 
 import org.checkerframework.checker.units.qual.s;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -85,7 +86,7 @@ public class HourlySolarScraper {
                         String tooltipText = tooltip.getText();
                         System.out.println("Tooltip text: " + tooltipText);
 
-                        WebElement exitButton = driver.findElement(By.cssSelector("article.closeSideNav"));
+                        WebElement exitButton = driver.findElement(By.className("closeSideNav"));
                         exitButton.click();
 
                         // collect timeframe and hourly data
@@ -99,8 +100,8 @@ public class HourlySolarScraper {
                 }
             
                 // Locate and click the left arrow (going back one day)
-                WebElement leftArrow = driver.findElement(By.xpath("//div[@class='arrow']/img[contains(@src, 'left-arrow-light')]"));
-                leftArrow.click();
+                WebElement element = driver.findElement(By.cssSelector("div.arrow"));
+                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
             }
             bufferedWriter.close();
 
