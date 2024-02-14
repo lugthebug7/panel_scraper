@@ -20,7 +20,6 @@ import java.util.List;
 
 public class HourlySolarScraper {
 
-
     public static void main(String[] args) throws IOException {
 
         ChromeOptions chromeOptions = new ChromeOptions();
@@ -80,21 +79,20 @@ public class HourlySolarScraper {
                     for (WebElement rechartItem : rechartItems){
 
                         // Scroll to the element
-                        new Actions(driver).moveToElement(rechartItem).perform();
+                        Actions action = new Actions(driver);
+                        action.moveToElement(rechartItem).perform();
 
                         // Wait for the card to appear
                         @SuppressWarnings("deprecation")
                         WebDriverWait wait = new WebDriverWait(driver, 10);
-                        WebElement card = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("tooltip")));
+                        wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("article.recharts-tooltip-wrapper"), " Wh"));
 
                         // Collect/Print data on the card
-                        String cardData = card.getText();
-                        System.out.println("Card Data: " + cardData);
-                        bufferedWriter.write(serialNumber + "," + cardData + "," + dateText);
+                        String timeData = driver.findElement(By.cssSelector("article.tooltip")).getText();
+                        String energyData = driver.findElement(By.cssSelector("article.energy")).getText();
+                        System.out.println("Card Data: " + timeData + "," + energyData);
+                        bufferedWriter.write(serialNumber + "," + timeData + "," + energyData + "," + dateText);
                         bufferedWriter.newLine(); 
-
-                        // Close the browser
-                        driver.quit();
 
                     }
 
