@@ -87,12 +87,16 @@ public class HourlySolarScraper {
                         WebDriverWait wait = new WebDriverWait(driver, 10);
                         wait.until(ExpectedConditions.textToBePresentInElementLocated(By.cssSelector("article.recharts-tooltip-wrapper"), " Wh"));
 
+                        String timeData = driver.findElement(By.cssSelector("article.recharts-tooltip-wrapper")).getText();
+                        System.out.println("Card Data: " + timeData);
+
                         // Collect/Print data on the card
-                        String timeData = driver.findElement(By.cssSelector("article.tooltip")).getText();
-                        String energyData = driver.findElement(By.cssSelector("article.energy")).getText();
-                        System.out.println("Card Data: " + timeData + "," + energyData);
-                        bufferedWriter.write(serialNumber + "," + timeData + "," + energyData + "," + dateText);
-                        bufferedWriter.newLine(); 
+                        // String timeData = driver.findElement(By.cssSelector("article.tooltip")).getText();
+                        // String energyData = driver.findElement(By.cssSelector("article.energy")).getText();
+                        // System.out.println("Card Data: " + timeData + "," + energyData);
+
+                        // bufferedWriter.write(serialNumber + "," + timeData + "," + energyData + "," + dateText);
+                        // bufferedWriter.newLine(); 
 
                     }
 
